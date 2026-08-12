@@ -1,0 +1,9 @@
+# Real hostnames, addresses and export options. Local only.
+beegfs/scripts/cluster.env
+beegfs/docs/survey-raw.txt
+
+# Never commit key material.
+id_*
+*.pem
+*.key
+conn.auth
