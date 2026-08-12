@@ -8,7 +8,7 @@ Regenerate: `./submit_compare.sh && python3 compare_results.py && python3 build_
 
 ---
 
-## The headline, stated honestly
+## Summary
 
 The cutover changed **two** things at once — the protocol (NFS→BeeGFS) *and* the
 disks (one 7200rpm HDD → four SSDs). Comparing `/home` to BeeGFS credits BeeGFS
