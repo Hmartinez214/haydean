@@ -1,0 +1,1155 @@
+{
+  "series": {
+    "beegfs3n": {
+      "label": "BeeGFS on SSD",
+      "kind": "BeeGFS",
+      "media": "SSD",
+      "runs": [
+        {
+          "tag": "beegfs3n",
+          "ranks": 3,
+          "nodes": 3,
+          "rpn": 1,
+          "ops": {
+            "Directory creation": {
+              "mean": 2481.2,
+              "sd": 1997.0,
+              "unreliable": true
+            },
+            "Directory stat": {
+              "mean": 9117.9,
+              "sd": 5915.7,
+              "unreliable": true
+            },
+            "Directory rename": {
+              "mean": 5752.2,
+              "sd": 95.5,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 5762.4,
+              "sd": 2793.7,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 4877.3,
+              "sd": 119.1,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 23898.5,
+              "sd": 3175.3,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 9353.8,
+              "sd": 671.3,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 9551.4,
+              "sd": 668.3,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 1045.7,
+              "sd": 1115.9,
+              "unreliable": true
+            },
+            "Tree removal": {
+              "mean": 1457.9,
+              "sd": 97.6,
+              "unreliable": false
+            }
+          }
+        },
+        {
+          "tag": "beegfs3n",
+          "ranks": 6,
+          "nodes": 3,
+          "rpn": 2,
+          "ops": {
+            "Directory creation": {
+              "mean": 2608.2,
+              "sd": 2068.2,
+              "unreliable": true
+            },
+            "Directory stat": {
+              "mean": 25637.3,
+              "sd": 7432.0,
+              "unreliable": false
+            },
+            "Directory rename": {
+              "mean": 8920.3,
+              "sd": 3021.8,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 8263.8,
+              "sd": 1564.6,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 8176.3,
+              "sd": 461.6,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 48919.3,
+              "sd": 2442.8,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 15545.2,
+              "sd": 220.3,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 9891.8,
+              "sd": 633.7,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 993.0,
+              "sd": 823.1,
+              "unreliable": true
+            },
+            "Tree removal": {
+              "mean": 858.3,
+              "sd": 226.2,
+              "unreliable": false
+            }
+          }
+        },
+        {
+          "tag": "beegfs3n",
+          "ranks": 12,
+          "nodes": 3,
+          "rpn": 4,
+          "ops": {
+            "Directory creation": {
+              "mean": 4009.5,
+              "sd": 356.5,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 57224.6,
+              "sd": 1822.8,
+              "unreliable": false
+            },
+            "Directory rename": {
+              "mean": 7992.3,
+              "sd": 460.1,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 7979.2,
+              "sd": 1216.2,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 8248.2,
+              "sd": 214.7,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 81344.8,
+              "sd": 530.2,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 26039.1,
+              "sd": 659.7,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 9836.6,
+              "sd": 513.1,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 575.5,
+              "sd": 748.8,
+              "unreliable": true
+            },
+            "Tree removal": {
+              "mean": 542.9,
+              "sd": 5.0,
+              "unreliable": false
+            }
+          }
+        },
+        {
+          "tag": "beegfs3n",
+          "ranks": 24,
+          "nodes": 3,
+          "rpn": 8,
+          "ops": {
+            "Directory creation": {
+              "mean": 2206.8,
+              "sd": 188.1,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 48407.4,
+              "sd": 2217.8,
+              "unreliable": false
+            },
+            "Directory rename": {
+              "mean": 8515.0,
+              "sd": 16.6,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 3238.8,
+              "sd": 1074.1,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 6710.0,
+              "sd": 164.9,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 127569.2,
+              "sd": 7433.9,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 23960.2,
+              "sd": 1452.7,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 8489.1,
+              "sd": 597.4,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 1957.7,
+              "sd": 338.6,
+              "unreliable": false
+            },
+            "Tree removal": {
+              "mean": 159.5,
+              "sd": 28.6,
+              "unreliable": false
+            }
+          }
+        },
+        {
+          "tag": "beegfs3n",
+          "ranks": 36,
+          "nodes": 3,
+          "rpn": 12,
+          "ops": {
+            "Directory creation": {
+              "mean": 3400.6,
+              "sd": 590.6,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 3139329.9,
+              "sd": 3152818.3,
+              "unreliable": true,
+              "cached": true
+            },
+            "Directory rename": {
+              "mean": 7293.3,
+              "sd": 608.9,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 5236.0,
+              "sd": 3355.8,
+              "unreliable": true
+            },
+            "File creation": {
+              "mean": 7243.4,
+              "sd": 963.1,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 105009.1,
+              "sd": 61007.2,
+              "unreliable": true
+            },
+            "File read": {
+              "mean": 23840.9,
+              "sd": 5129.2,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 8098.2,
+              "sd": 1747.1,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 92.7,
+              "sd": 104.7,
+              "unreliable": true
+            },
+            "Tree removal": {
+              "mean": 170.1,
+              "sd": 68.6,
+              "unreliable": false
+            }
+          }
+        }
+      ]
+    },
+    "beegfs4n": {
+      "label": "BeeGFS on SSD",
+      "kind": "BeeGFS",
+      "media": "SSD",
+      "runs": [
+        {
+          "tag": "beegfs4n",
+          "ranks": 4,
+          "nodes": 4,
+          "rpn": 1,
+          "ops": {
+            "Directory creation": {
+              "mean": 3704.2,
+              "sd": 2474.6,
+              "unreliable": true
+            },
+            "Directory stat": {
+              "mean": 14614.3,
+              "sd": 6431.0,
+              "unreliable": false
+            },
+            "Directory rename": {
+              "mean": 10328.9,
+              "sd": 4307.1,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 6614.8,
+              "sd": 1240.0,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 6673.2,
+              "sd": 499.0,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 34310.9,
+              "sd": 2332.8,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 12361.6,
+              "sd": 1095.7,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 11736.8,
+              "sd": 118.7,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 1167.6,
+              "sd": 943.5,
+              "unreliable": true
+            },
+            "Tree removal": {
+              "mean": 1195.3,
+              "sd": 30.3,
+              "unreliable": false
+            }
+          }
+        },
+        {
+          "tag": "beegfs4n",
+          "ranks": 8,
+          "nodes": 4,
+          "rpn": 2,
+          "ops": {
+            "Directory creation": {
+              "mean": 5602.9,
+              "sd": 1734.3,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 43747.5,
+              "sd": 4173.5,
+              "unreliable": false
+            },
+            "Directory rename": {
+              "mean": 10516.8,
+              "sd": 278.8,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 8761.9,
+              "sd": 3351.0,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 9028.1,
+              "sd": 140.7,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 64456.5,
+              "sd": 4105.3,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 20635.8,
+              "sd": 850.2,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 11305.3,
+              "sd": 94.6,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 1435.7,
+              "sd": 275.9,
+              "unreliable": false
+            },
+            "Tree removal": {
+              "mean": 774.5,
+              "sd": 66.8,
+              "unreliable": false
+            }
+          }
+        },
+        {
+          "tag": "beegfs4n",
+          "ranks": 16,
+          "nodes": 4,
+          "rpn": 4,
+          "ops": {
+            "Directory creation": {
+              "mean": 5719.7,
+              "sd": 733.7,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 3166456.6,
+              "sd": 365655.2,
+              "unreliable": true,
+              "cached": true
+            },
+            "Directory rename": {
+              "mean": 9812.7,
+              "sd": 336.6,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 10640.3,
+              "sd": 736.5,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 8890.9,
+              "sd": 318.4,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 112265.9,
+              "sd": 3287.5,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 27827.7,
+              "sd": 60.9,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 10960.0,
+              "sd": 350.5,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 1571.5,
+              "sd": 321.2,
+              "unreliable": false
+            },
+            "Tree removal": {
+              "mean": 436.6,
+              "sd": 134.4,
+              "unreliable": false
+            }
+          }
+        },
+        {
+          "tag": "beegfs4n",
+          "ranks": 32,
+          "nodes": 4,
+          "rpn": 8,
+          "ops": {
+            "Directory creation": {
+              "mean": 5378.3,
+              "sd": 442.8,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 6068572.4,
+              "sd": 33346.8,
+              "unreliable": true,
+              "cached": true
+            },
+            "Directory rename": {
+              "mean": 8033.4,
+              "sd": 1629.6,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 8757.4,
+              "sd": 1047.1,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 7645.4,
+              "sd": 584.4,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 137983.2,
+              "sd": 19753.3,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 23503.8,
+              "sd": 298.3,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 9660.6,
+              "sd": 695.9,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 1523.0,
+              "sd": 314.6,
+              "unreliable": false
+            },
+            "Tree removal": {
+              "mean": 170.0,
+              "sd": 23.1,
+              "unreliable": false
+            }
+          }
+        },
+        {
+          "tag": "beegfs4n",
+          "ranks": 48,
+          "nodes": 4,
+          "rpn": 12,
+          "ops": {
+            "Directory creation": {
+              "mean": 4863.6,
+              "sd": 290.1,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 5084211.3,
+              "sd": 4550820.7,
+              "unreliable": true,
+              "cached": true
+            },
+            "Directory rename": {
+              "mean": 6953.3,
+              "sd": 2115.9,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 5217.9,
+              "sd": 3040.6,
+              "unreliable": true
+            },
+            "File creation": {
+              "mean": 7093.8,
+              "sd": 98.4,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 102138.6,
+              "sd": 18861.6,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 21772.9,
+              "sd": 1158.5,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 8598.0,
+              "sd": 65.6,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 984.1,
+              "sd": 640.3,
+              "unreliable": true
+            },
+            "Tree removal": {
+              "mean": 89.9,
+              "sd": 40.1,
+              "unreliable": false
+            }
+          }
+        }
+      ]
+    },
+    "hay3n": {
+      "label": "NFS on SSD",
+      "kind": "NFS",
+      "media": "SSD",
+      "runs": [
+        {
+          "tag": "hay3n",
+          "ranks": 3,
+          "nodes": 3,
+          "rpn": 1,
+          "ops": {
+            "Directory creation": {
+              "mean": 2626.9,
+              "sd": 696.6,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 13114.6,
+              "sd": 1780.4,
+              "unreliable": false
+            },
+            "Directory rename": {
+              "mean": 2629.9,
+              "sd": 148.4,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 3023.7,
+              "sd": 172.6,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 3515.8,
+              "sd": 318.1,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 14364.4,
+              "sd": 6251.4,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 68.4,
+              "sd": 56.0,
+              "unreliable": true
+            },
+            "File removal": {
+              "mean": 2047.5,
+              "sd": 195.7,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 662.3,
+              "sd": 367.9,
+              "unreliable": true
+            },
+            "Tree removal": {
+              "mean": 825.8,
+              "sd": 206.5,
+              "unreliable": false
+            }
+          }
+        },
+        {
+          "tag": "hay3n",
+          "ranks": 6,
+          "nodes": 3,
+          "rpn": 2,
+          "ops": {
+            "Directory creation": {
+              "mean": 3045.5,
+              "sd": 18.9,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 28698.0,
+              "sd": 5472.0,
+              "unreliable": false
+            },
+            "Directory rename": {
+              "mean": 3822.6,
+              "sd": 66.3,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 3287.5,
+              "sd": 322.8,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 4013.8,
+              "sd": 15.1,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 35508.3,
+              "sd": 513.1,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 10651.3,
+              "sd": 13891.9,
+              "unreliable": true
+            },
+            "File removal": {
+              "mean": 3023.1,
+              "sd": 1414.0,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 625.5,
+              "sd": 86.0,
+              "unreliable": false
+            },
+            "Tree removal": {
+              "mean": 820.8,
+              "sd": 476.4,
+              "unreliable": true
+            }
+          }
+        },
+        {
+          "tag": "hay3n",
+          "ranks": 12,
+          "nodes": 3,
+          "rpn": 4,
+          "ops": {
+            "Directory creation": {
+              "mean": 2363.0,
+              "sd": 1415.4,
+              "unreliable": true
+            },
+            "Directory stat": {
+              "mean": 48684.6,
+              "sd": 13436.8,
+              "unreliable": false
+            },
+            "Directory rename": {
+              "mean": 3194.5,
+              "sd": 1175.7,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 3170.8,
+              "sd": 322.5,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 4026.6,
+              "sd": 109.1,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 63139.6,
+              "sd": 41.1,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 32119.6,
+              "sd": 289.6,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 3904.3,
+              "sd": 150.1,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 1191.4,
+              "sd": 938.6,
+              "unreliable": true
+            },
+            "Tree removal": {
+              "mean": 764.9,
+              "sd": 31.7,
+              "unreliable": false
+            }
+          }
+        }
+      ]
+    },
+    "local1n": {
+      "label": "node-local ext4",
+      "kind": "local",
+      "media": "SSD",
+      "runs": [
+        {
+          "tag": "local1n",
+          "ranks": 4,
+          "nodes": 1,
+          "rpn": 4,
+          "ops": {
+            "Directory creation": {
+              "mean": 306793.3,
+              "sd": 285797.1,
+              "unreliable": true
+            },
+            "Directory stat": {
+              "mean": 1924195.4,
+              "sd": 1798122.8,
+              "unreliable": true
+            },
+            "Directory rename": {
+              "mean": 364689.3,
+              "sd": 226068.9,
+              "unreliable": true
+            },
+            "Directory removal": {
+              "mean": 685876.1,
+              "sd": 24458.4,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 497111.3,
+              "sd": 2929.3,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 3219796.6,
+              "sd": 34134.0,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 1911595.5,
+              "sd": 62534.3,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 1125062.1,
+              "sd": 17502.7,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 132440.5,
+              "sd": 161621.0,
+              "unreliable": true
+            },
+            "Tree removal": {
+              "mean": 284681.3,
+              "sd": 53680.0,
+              "unreliable": false
+            }
+          }
+        }
+      ]
+    },
+    "nfshdd4n": {
+      "label": "NFS on HDD",
+      "kind": "NFS",
+      "media": "HDD",
+      "runs": [
+        {
+          "tag": "nfshdd4n",
+          "ranks": 4,
+          "nodes": 4,
+          "rpn": 1,
+          "ops": {
+            "Directory creation": {
+              "mean": 57.7,
+              "sd": 0.6,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 14847.5,
+              "sd": 1927.8,
+              "unreliable": false
+            },
+            "Directory rename": {
+              "mean": 51.8,
+              "sd": 10.2,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 109.4,
+              "sd": 7.4,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 57.7,
+              "sd": 0.5,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 8692.9,
+              "sd": 4463.5,
+              "unreliable": true
+            },
+            "File read": {
+              "mean": 116.1,
+              "sd": 109.9,
+              "unreliable": true
+            },
+            "File removal": {
+              "mean": 94.8,
+              "sd": 30.6,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 65.8,
+              "sd": 10.7,
+              "unreliable": false
+            },
+            "Tree removal": {
+              "mean": 58.5,
+              "sd": 1.4,
+              "unreliable": false
+            }
+          }
+        },
+        {
+          "tag": "nfshdd4n",
+          "ranks": 8,
+          "nodes": 4,
+          "rpn": 2,
+          "ops": {
+            "Directory creation": {
+              "mean": 52.2,
+              "sd": 0.1,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 33179.2,
+              "sd": 477.3,
+              "unreliable": false
+            },
+            "Directory rename": {
+              "mean": 54.7,
+              "sd": 5.7,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 110.6,
+              "sd": 6.0,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 53.8,
+              "sd": 1.1,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 23940.4,
+              "sd": 12584.8,
+              "unreliable": true
+            },
+            "File read": {
+              "mean": 21316.6,
+              "sd": 15174.1,
+              "unreliable": true
+            },
+            "File removal": {
+              "mean": 106.3,
+              "sd": 15.2,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 60.1,
+              "sd": 1.6,
+              "unreliable": false
+            },
+            "Tree removal": {
+              "mean": 33.2,
+              "sd": 35.7,
+              "unreliable": true
+            }
+          }
+        },
+        {
+          "tag": "nfshdd4n",
+          "ranks": 16,
+          "nodes": 4,
+          "rpn": 4,
+          "ops": {
+            "Directory creation": {
+              "mean": 54.8,
+              "sd": 4.5,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 54415.9,
+              "sd": 40.5,
+              "unreliable": false
+            },
+            "Directory rename": {
+              "mean": 55.3,
+              "sd": 4.3,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 109.9,
+              "sd": 7.4,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 54.5,
+              "sd": 1.2,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 48709.7,
+              "sd": 4227.0,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 815002.6,
+              "sd": 25685.9,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 116.1,
+              "sd": 0.4,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 63.2,
+              "sd": 5.9,
+              "unreliable": false
+            },
+            "Tree removal": {
+              "mean": 7.7,
+              "sd": 0.4,
+              "unreliable": false
+            }
+          }
+        },
+        {
+          "tag": "nfshdd4n",
+          "ranks": 32,
+          "nodes": 4,
+          "rpn": 8,
+          "ops": {
+            "Directory creation": {
+              "mean": 55.2,
+              "sd": 0.8,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 63408.8,
+              "sd": 3064.2,
+              "unreliable": false
+            },
+            "Directory rename": {
+              "mean": 54.3,
+              "sd": 0.2,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 108.1,
+              "sd": 9.3,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 55.7,
+              "sd": 0.6,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 64353.6,
+              "sd": 2519.1,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 1490894.5,
+              "sd": 67448.2,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 106.7,
+              "sd": 2.1,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 63.9,
+              "sd": 6.7,
+              "unreliable": false
+            },
+            "Tree removal": {
+              "mean": 8.5,
+              "sd": 0.0,
+              "unreliable": false
+            }
+          }
+        },
+        {
+          "tag": "nfshdd4n",
+          "ranks": 48,
+          "nodes": 4,
+          "rpn": 12,
+          "ops": {
+            "Directory creation": {
+              "mean": 54.4,
+              "sd": 1.1,
+              "unreliable": false
+            },
+            "Directory stat": {
+              "mean": 53379.5,
+              "sd": 4909.2,
+              "unreliable": false
+            },
+            "Directory rename": {
+              "mean": 54.9,
+              "sd": 1.3,
+              "unreliable": false
+            },
+            "Directory removal": {
+              "mean": 106.6,
+              "sd": 2.4,
+              "unreliable": false
+            },
+            "File creation": {
+              "mean": 55.9,
+              "sd": 1.2,
+              "unreliable": false
+            },
+            "File stat": {
+              "mean": 55199.9,
+              "sd": 943.1,
+              "unreliable": false
+            },
+            "File read": {
+              "mean": 156352.0,
+              "sd": 36472.5,
+              "unreliable": false
+            },
+            "File removal": {
+              "mean": 107.5,
+              "sd": 2.1,
+              "unreliable": false
+            },
+            "Tree creation": {
+              "mean": 64.4,
+              "sd": 8.1,
+              "unreliable": false
+            },
+            "Tree removal": {
+              "mean": 8.2,
+              "sd": 0.1,
+              "unreliable": false
+            }
+          }
+        }
+      ]
+    }
+  },
+  "ops": [
+    "File creation",
+    "File stat",
+    "File removal",
+    "Directory creation",
+    "Directory stat",
+    "Directory removal",
+    "Tree creation",
+    "Tree removal"
+  ]
+}

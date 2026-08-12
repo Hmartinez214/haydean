@@ -1,0 +1,35 @@
+### mdtest beegfs4n
+date       : 2026-08-12T01:54:17+00:00
+nodelist   : haydean[1-4]
+ntasks     : 48  (4 nodes x 12 ranks)
+target     : /haydean/mdtest
+files/rank : 64   iterations: 2   extra: ''
+stride -N  : 12
+###
+-- started at 08/12/2026 01:54:17 --
+
+mdtest-4.1.0+dev was launched with 48 total task(s) on 4 node(s)
+Command line used: /home/hpcadmin/storagebenchmarks/opt/bin/mdtest '-d' '/haydean/mdtest' '-n' '64' '-i' '2' '-N' '12'
+WARNING: Read bytes is 0, thus, a read test will actually just open/close
+Nodemap: 111111111111000000000000000000000000000000000000
+Path                : /haydean/mdtest
+FS                  : 446.9 GiB   Used FS: 8.4%   Inodes: 0.0 Mi   Used Inodes: -nan%
+V-0: Rank   0 Line  2594 Shifting ranks by 144 for each phase.
+48 tasks, 3072 files/directories
+
+SUMMARY rate (in ops/sec): (of 2 iterations)
+   Operation                     Max            Min           Mean        Std Dev
+   ---------                     ---            ---           ----        -------
+   Directory creation           5068.747       4658.505       4863.626        290.085
+   Directory stat            8302127.505    1866295.175    5084211.340    4550820.683
+   Directory rename             8449.454       5457.151       6953.303       2115.877
+   Directory removal            7367.912       3067.791       5217.851       3040.645
+   File creation                7163.345       7024.156       7093.751         98.421
+   File stat                  115475.770      88801.375     102138.572      18861.646
+   File read                   22592.051      20953.683      21772.867       1158.501
+   File removal                 8644.388       8551.669       8598.029         65.563
+   Tree creation                1436.898        531.328        984.113        640.334
+   Tree removal                  118.259         61.534         89.897         40.111
+-- finished at 08/12/2026 01:54:24 --
+
+--- mdtest exit=0 ---

@@ -1,0 +1,35 @@
+### mdtest nfshdd4n
+date       : 2026-08-12T01:55:14+00:00
+nodelist   : haydean[1-4]
+ntasks     : 8  (4 nodes x 2 ranks)
+target     : /home/hpcadmin/storagebenchmarks/mdtest_home
+files/rank : 64   iterations: 2   extra: ''
+stride -N  : 2
+###
+-- started at 08/12/2026 01:55:14 --
+
+mdtest-4.1.0+dev was launched with 8 total task(s) on 4 node(s)
+Command line used: /home/hpcadmin/storagebenchmarks/opt/bin/mdtest '-d' '/home/hpcadmin/storagebenchmarks/mdtest_home' '-n' '64' '-i' '2' '-N' '2'
+WARNING: Read bytes is 0, thus, a read test will actually just open/close
+Nodemap: 11000000
+Path                : /home/hpcadmin/storagebenchmarks/mdtest_home
+FS                  : 1.8 TiB   Used FS: 3.2%   Inodes: 116.4 Mi   Used Inodes: 0.7%
+V-0: Rank   0 Line  2594 Shifting ranks by 4 for each phase.
+8 tasks, 512 files/directories
+
+SUMMARY rate (in ops/sec): (of 2 iterations)
+   Operation                     Max            Min           Mean        Std Dev
+   ---------                     ---            ---           ----        -------
+   Directory creation             52.214         52.092         52.153          0.086
+   Directory stat              33516.726      32841.665      33179.195        477.340
+   Directory rename               58.728         50.679         54.703          5.691
+   Directory removal             114.825        106.388        110.606          5.966
+   File creation                  54.600         53.039         53.820          1.104
+   File stat                   32839.154      15041.561      23940.358      12584.799
+   File read                   32046.255      10586.873      21316.564      15174.075
+   File removal                  117.045         95.488        106.267         15.243
+   Tree creation                  61.204         58.997         60.100          1.561
+   Tree removal                   58.480          7.978         33.229         35.710
+-- finished at 08/12/2026 01:56:32 --
+
+--- mdtest exit=0 ---

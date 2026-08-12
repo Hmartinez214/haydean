@@ -1,0 +1,35 @@
+### mdtest hay3n
+date       : 2026-08-11T23:22:27+00:00
+nodelist   : haydean[2-4]
+ntasks     : 12  (3 nodes x 4 ranks)
+target     : /haydean/mdtest
+files/rank : 64   iterations: 2   extra: ''
+stride -N  : 4
+###
+-- started at 08/11/2026 23:22:27 --
+
+mdtest-4.1.0+dev was launched with 12 total task(s) on 3 node(s)
+Command line used: /home/hpcadmin/storagebenchmarks/opt/bin/mdtest '-d' '/haydean/mdtest' '-n' '64' '-i' '2' '-N' '4'
+WARNING: Read bytes is 0, thus, a read test will actually just open/close
+Nodemap: 111100000000
+Path                : /haydean/mdtest
+FS                  : 218.0 GiB   Used FS: 16.5%   Inodes: 13.9 Mi   Used Inodes: 3.4%
+V-0: Rank   0 Line  2594 Shifting ranks by 16 for each phase.
+12 tasks, 768 files/directories
+
+SUMMARY rate (in ops/sec): (of 2 iterations)
+   Operation                     Max            Min           Mean        Std Dev
+   ---------                     ---            ---           ----        -------
+   Directory creation           3363.920       1362.173       2363.046       1415.448
+   Directory stat              58185.825      39183.368      48684.596      13436.767
+   Directory rename             4025.832       2363.193       3194.513       1175.664
+   Directory removal            3398.892       2942.798       3170.845        322.507
+   File creation                4103.702       3949.439       4026.570        109.081
+   File stat                   63168.715      63110.548      63139.632         41.131
+   File read                   32324.420      31914.809      32119.615        289.639
+   File removal                 4010.400       3798.145       3904.272        150.087
+   Tree creation                1855.066        527.718       1191.392        938.577
+   Tree removal                  787.367        742.486        764.927         31.736
+-- finished at 08/11/2026 23:22:31 --
+
+--- mdtest exit=0 ---

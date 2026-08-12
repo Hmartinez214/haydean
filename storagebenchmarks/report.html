@@ -1,0 +1,164 @@
+<title>BeeGFS vs NFS — mdtest metadata benchmark</title>
+<style>
+*{box-sizing:border-box}
+/* Tokens live on :root so body -- which sits ABOVE .viz-root -- can resolve
+   them. Defining them on .viz-root left body's background unresolved, since
+   custom properties inherit downward only. */
+:root{color-scheme:light;
+ --surface-1:#fcfcfb;--plane:#f9f9f7;--text-primary:#0b0b0b;--text-secondary:#52514e;
+ --muted:#898781;--grid:#e1e0d9;--axis:#c3c2b7;--border:rgba(11,11,11,0.10);
+ --beegfs:#2a78d6;--nfsssd:#eb6834;--nfshdd:#1baf7a;}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+ color-scheme:dark;--surface-1:#1a1a19;--plane:#0d0d0d;--text-primary:#fff;
+ --text-secondary:#c3c2b7;--muted:#898781;--grid:#2c2c2a;--axis:#383835;
+ --border:rgba(255,255,255,0.10);--beegfs:#3987e5;--nfsssd:#d95926;--nfshdd:#199e70;}}
+:root[data-theme="dark"]{color-scheme:dark;
+ --surface-1:#1a1a19;--plane:#0d0d0d;--text-primary:#fff;--text-secondary:#c3c2b7;
+ --muted:#898781;--grid:#2c2c2a;--axis:#383835;--border:rgba(255,255,255,0.10);
+ --beegfs:#3987e5;--nfsssd:#d95926;--nfshdd:#199e70;}
+body{margin:0;background:var(--plane);color:var(--text-primary);
+ font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}
+.viz-root{max-width:940px;margin:0 auto;padding:34px 20px 72px;background:var(--plane)}
+.eyebrow{font-size:11.5px;font-weight:640;letter-spacing:.10em;text-transform:uppercase;
+ color:var(--muted);margin:0 0 10px}
+h1{font-size:29px;line-height:1.2;margin:0 0 8px;letter-spacing:-.018em;
+ text-wrap:balance;font-weight:660}
+.sub{color:var(--text-secondary);margin:0 0 22px;font-size:14.5px}
+h2{font-size:18px;margin:38px 0 4px;letter-spacing:-.008em;font-weight:640;
+ text-wrap:balance}
+.note{color:var(--text-secondary);font-size:14px;margin:0 0 14px}
+.card{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;
+ padding:18px 20px;margin:14px 0}
+.hero{display:flex;flex-wrap:wrap;gap:14px;margin:18px 0 6px}
+.stat{background:var(--surface-1);border:1px solid var(--border);border-radius:10px;
+ padding:14px 18px;flex:1 1 210px}
+.stat .v{font-size:30px;font-weight:640;letter-spacing:-.02em;line-height:1.1}
+.stat .k{color:var(--text-secondary);font-size:13px;margin-top:4px}
+.chart{width:100%;height:auto;display:block;overflow:visible}
+.sm{max-width:340px}
+.grid-sm{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:12px}
+.sm-fig{margin:0;background:var(--surface-1);border:1px solid var(--border);
+ border-radius:10px;padding:10px 8px 4px}
+.sm-fig figcaption{font-size:13.5px;font-weight:600;margin:2px 0 2px 10px}
+.bar{fill:var(--beegfs)}
+.parity{stroke:var(--axis);stroke-width:2;stroke-dasharray:4 4}
+.whisk{stroke:var(--surface-1);stroke-width:2;opacity:.9}
+.rowlab{fill:var(--text-primary);font-size:13.5px}
+.val{fill:var(--text-primary);font-size:13.5px;font-weight:640}
+.axlab{fill:var(--muted);font-size:12px}
+.tick{fill:var(--muted);font-size:11px;font-variant-numeric:tabular-nums}
+.axtitle{fill:var(--text-secondary);font-size:11.5px}
+.grid{stroke:var(--grid);stroke-width:1}
+.end{text-anchor:end}.mid{text-anchor:middle}
+.ln{fill:none;stroke-width:2;stroke-linejoin:round}
+.ln.beegfs{stroke:var(--beegfs)}.ln.nfsssd{stroke:var(--nfsssd)}.ln.nfshdd{stroke:var(--nfshdd)}
+.pt{stroke:var(--surface-1);stroke-width:2}
+.pt.beegfs{fill:var(--beegfs)}.pt.nfsssd{fill:var(--nfsssd)}.pt.nfshdd{fill:var(--nfshdd)}
+.dot{width:10px;height:10px;border-radius:3px;display:inline-block;margin-right:7px;
+ vertical-align:-1px}
+.dot.beegfs{background:var(--beegfs)}.dot.nfsssd{background:var(--nfsssd)}
+.dot.nfshdd{background:var(--nfshdd)}
+.legend{display:flex;gap:20px;flex-wrap:wrap;margin:10px 0 6px;font-size:13.5px;
+ color:var(--text-secondary)}
+.lg{display:inline-flex;align-items:center}
+.tablewrap{overflow-x:auto;background:var(--surface-1);border:1px solid var(--border);
+ border-radius:10px}
+table{border-collapse:collapse;width:100%;font-size:13px}
+th,td{padding:7px 11px;text-align:left;border-bottom:1px solid var(--border);
+ white-space:nowrap}
+th{font-weight:600;color:var(--text-secondary);font-size:12px}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums}
+td.flag{color:var(--muted);font-style:italic}
+tbody tr:last-child td{border-bottom:none}
+ul{margin:8px 0 0;padding-left:20px}li{margin:6px 0}
+.warn{border-left:3px solid var(--nfsssd);padding-left:14px}
+code{background:var(--grid);padding:1px 5px;border-radius:4px;font-size:12.5px}
+</style>
+<div class="viz-root">
+<p class="eyebrow">haydean cluster · storage evaluation</p>
+<h1>BeeGFS vs NFS — metadata benchmark</h1>
+<p class="sub">mdtest 4.1.0 · 19 runs · measured on an idle cluster after the BeeGFS cutover</p>
+
+<div class="hero">
+  <div class="stat"><div class="v">1.8×</div>
+    <div class="k">BeeGFS vs NFS at creating files —<br><strong>same SSDs, same clients</strong>.
+    This is the protocol's real contribution.</div></div>
+  <div class="stat"><div class="v">156×</div>
+    <div class="k">BeeGFS vs your <code>/home</code> —<br>but most of this gap is
+    SSD vs spinning disk, <em>not</em> BeeGFS.</div></div>
+  <div class="stat"><div class="v">58</div>
+    <div class="k">file creates/sec on <code>/home</code> —<br>flat from 4 to 48 ranks.
+    One spindle is the ceiling.</div></div>
+</div>
+
+<h2>Reading this honestly</h2>
+<p class="note">The cutover changed two things at once: the <strong>protocol</strong>
+(NFS→BeeGFS) and the <strong>disks</strong> (one 7200rpm HDD → four SSDs). Comparing
+<code>/home</code> against BeeGFS would credit BeeGFS for the SSDs. So the headline
+compares BeeGFS against NFS <strong>on the very same SSDs, same three client nodes,
+identical mdtest settings</strong> — measured at <code>/haydean</code> just before and
+just after the cutover. That isolates the protocol.</p>
+
+<div class="card">
+<svg viewBox="0 0 680 266" class="chart" role="img" aria-label="Speedup of BeeGFS over NFS on the same SSDs, by operation"><line x1="254.1" y1="26" x2="254.1" y2="248" class="parity"/><text x="254.1" y="18" class="axlab mid">1× — no difference</text><text x="158" y="47" class="rowlab end">File creation</text><rect x="168" y="32" width="157.1" height="21" rx="4" class="bar"/><line x1="287.5" y1="42.5" x2="344.4" y2="42.5" class="whisk"/><text x="333.1" y="48" class="val">1.8×</text><text x="158" y="91" class="rowlab end">File stat</text><rect x="168" y="76" width="124.3" height="21" rx="4" class="bar"/><line x1="279.0" y1="86.5" x2="311.3" y2="86.5" class="whisk"/><text x="300.3" y="92" class="val">1.4×</text><text x="158" y="135" class="rowlab end">File removal</text><rect x="168" y="120" width="300.2" height="21" rx="4" class="bar"/><line x1="385.0" y1="130.5" x2="569.8" y2="130.5" class="whisk"/><text x="476.2" y="136" class="val">3.5×</text><text x="158" y="179" class="rowlab end">Directory stat</text><rect x="168" y="164" width="89.1" height="21" rx="4" class="bar"/><line x1="244.9" y1="174.5" x2="269.2" y2="174.5" class="whisk"/><text x="265.1" y="180" class="val">1.0×</text><text x="158" y="223" class="rowlab end">Directory removal</text><rect x="168" y="208" width="199.1" height="21" rx="4" class="bar"/><line x1="332.2" y1="218.5" x2="384.8" y2="218.5" class="whisk"/><text x="375.1" y="224" class="val">2.3×</text></svg>
+<p class="note" style="margin:8px 0 0">Bar = mean speedup across the rank sweep; the
+pale line spans min–max. Right of the dashed line, BeeGFS wins. Directory creation is
+absent because every matched point failed the reliability check below.</p>
+</div>
+
+<h2>How each filesystem scales</h2>
+<p class="note">Operations/sec against MPI ranks. <strong>The vertical axis is
+logarithmic</strong> — NFS-on-HDD is ~150× slower, and a linear axis would flatten it
+onto the floor. Missing points were excluded as unreliable.</p>
+<div class="legend"><span class="lg"><span class="dot beegfs"></span>BeeGFS (SSD)</span><span class="lg"><span class="dot nfsssd"></span>NFS (SSD)</span><span class="lg"><span class="dot nfshdd"></span>NFS (HDD)</span></div>
+<div class="grid-sm">
+<figure class="sm-fig"><figcaption>File creation</figcaption><svg viewBox="0 0 340 205" class="chart sm" role="img" aria-label="File creation: operations per second versus MPI ranks, log scale"><line x1="50" y1="171.0" x2="328" y2="171.0" class="grid"/><text x="44" y="174.5" class="tick end">10</text><line x1="50" y1="119.3" x2="328" y2="119.3" class="grid"/><text x="44" y="122.8" class="tick end">100</text><line x1="50" y1="67.7" x2="328" y2="67.7" class="grid"/><text x="44" y="71.2" class="tick end">1k</text><line x1="50" y1="16.0" x2="328" y2="16.0" class="grid"/><text x="44" y="19.5" class="tick end">10k</text><text x="50.0" y="191" class="tick mid">3</text><text x="78.8" y="191" class="tick mid">4</text><text x="119.5" y="191" class="tick mid">6</text><text x="148.3" y="191" class="tick mid">8</text><text x="189.0" y="191" class="tick mid">12</text><text x="217.8" y="191" class="tick mid">16</text><text x="287.3" y="191" class="tick mid">32</text><text x="328.0" y="191" class="tick mid">48</text><text x="189" y="203" class="axtitle mid">MPI ranks</text><path d="M78.8,25.1 L148.3,18.3 L217.8,18.6 L287.3,22.0 L328.0,23.7" class="ln beegfs"/><circle cx="78.8" cy="25.1" r="4.5" class="pt beegfs"/><circle cx="148.3" cy="18.3" r="4.5" class="pt beegfs"/><circle cx="217.8" cy="18.6" r="4.5" class="pt beegfs"/><circle cx="287.3" cy="22.0" r="4.5" class="pt beegfs"/><circle cx="328.0" cy="23.7" r="4.5" class="pt beegfs"/><path d="M50.0,39.5 L119.5,36.5 L189.0,36.4" class="ln nfsssd"/><circle cx="50.0" cy="39.5" r="4.5" class="pt nfsssd"/><circle cx="119.5" cy="36.5" r="4.5" class="pt nfsssd"/><circle cx="189.0" cy="36.4" r="4.5" class="pt nfsssd"/><path d="M78.8,131.7 L148.3,133.2 L217.8,133.0 L287.3,132.5 L328.0,132.4" class="ln nfshdd"/><circle cx="78.8" cy="131.7" r="4.5" class="pt nfshdd"/><circle cx="148.3" cy="133.2" r="4.5" class="pt nfshdd"/><circle cx="217.8" cy="133.0" r="4.5" class="pt nfshdd"/><circle cx="287.3" cy="132.5" r="4.5" class="pt nfshdd"/><circle cx="328.0" cy="132.4" r="4.5" class="pt nfshdd"/></svg></figure><figure class="sm-fig"><figcaption>File stat</figcaption><svg viewBox="0 0 340 205" class="chart sm" role="img" aria-label="File stat: operations per second versus MPI ranks, log scale"><line x1="50" y1="171.0" x2="328" y2="171.0" class="grid"/><text x="44" y="174.5" class="tick end">10k</text><line x1="50" y1="93.5" x2="328" y2="93.5" class="grid"/><text x="44" y="97.0" class="tick end">100k</text><line x1="50" y1="16.0" x2="328" y2="16.0" class="grid"/><text x="44" y="19.5" class="tick end">1000k</text><text x="50.0" y="191" class="tick mid">3</text><text x="78.8" y="191" class="tick mid">4</text><text x="119.5" y="191" class="tick mid">6</text><text x="148.3" y="191" class="tick mid">8</text><text x="189.0" y="191" class="tick mid">12</text><text x="217.8" y="191" class="tick mid">16</text><text x="287.3" y="191" class="tick mid">32</text><text x="328.0" y="191" class="tick mid">48</text><text x="189" y="203" class="axtitle mid">MPI ranks</text><path d="M78.8,129.5 L148.3,108.3 L217.8,89.6 L287.3,82.7 L328.0,92.8" class="ln beegfs"/><circle cx="78.8" cy="129.5" r="4.5" class="pt beegfs"/><circle cx="148.3" cy="108.3" r="4.5" class="pt beegfs"/><circle cx="217.8" cy="89.6" r="4.5" class="pt beegfs"/><circle cx="287.3" cy="82.7" r="4.5" class="pt beegfs"/><circle cx="328.0" cy="92.8" r="4.5" class="pt beegfs"/><path d="M50.0,158.8 L119.5,128.3 L189.0,109.0" class="ln nfsssd"/><circle cx="50.0" cy="158.8" r="4.5" class="pt nfsssd"/><circle cx="119.5" cy="128.3" r="4.5" class="pt nfsssd"/><circle cx="189.0" cy="109.0" r="4.5" class="pt nfsssd"/><path d="M217.8,117.7 L287.3,108.3 L328.0,113.5" class="ln nfshdd"/><circle cx="217.8" cy="117.7" r="4.5" class="pt nfshdd"/><circle cx="287.3" cy="108.3" r="4.5" class="pt nfshdd"/><circle cx="328.0" cy="113.5" r="4.5" class="pt nfshdd"/></svg></figure><figure class="sm-fig"><figcaption>File removal</figcaption><svg viewBox="0 0 340 205" class="chart sm" role="img" aria-label="File removal: operations per second versus MPI ranks, log scale"><line x1="50" y1="171.0" x2="328" y2="171.0" class="grid"/><text x="44" y="174.5" class="tick end">10</text><line x1="50" y1="132.2" x2="328" y2="132.2" class="grid"/><text x="44" y="135.8" class="tick end">100</text><line x1="50" y1="93.5" x2="328" y2="93.5" class="grid"/><text x="44" y="97.0" class="tick end">1k</text><line x1="50" y1="54.8" x2="328" y2="54.8" class="grid"/><text x="44" y="58.2" class="tick end">10k</text><line x1="50" y1="16.0" x2="328" y2="16.0" class="grid"/><text x="44" y="19.5" class="tick end">100k</text><text x="50.0" y="191" class="tick mid">3</text><text x="78.8" y="191" class="tick mid">4</text><text x="119.5" y="191" class="tick mid">6</text><text x="148.3" y="191" class="tick mid">8</text><text x="189.0" y="191" class="tick mid">12</text><text x="217.8" y="191" class="tick mid">16</text><text x="287.3" y="191" class="tick mid">32</text><text x="328.0" y="191" class="tick mid">48</text><text x="189" y="203" class="axtitle mid">MPI ranks</text><path d="M78.8,52.1 L148.3,52.7 L217.8,53.2 L287.3,55.3 L328.0,57.3" class="ln beegfs"/><circle cx="78.8" cy="52.1" r="4.5" class="pt beegfs"/><circle cx="148.3" cy="52.7" r="4.5" class="pt beegfs"/><circle cx="217.8" cy="53.2" r="4.5" class="pt beegfs"/><circle cx="287.3" cy="55.3" r="4.5" class="pt beegfs"/><circle cx="328.0" cy="57.3" r="4.5" class="pt beegfs"/><path d="M50.0,81.4 L119.5,74.9 L189.0,70.6" class="ln nfsssd"/><circle cx="50.0" cy="81.4" r="4.5" class="pt nfsssd"/><circle cx="119.5" cy="74.9" r="4.5" class="pt nfsssd"/><circle cx="189.0" cy="70.6" r="4.5" class="pt nfsssd"/><path d="M78.8,133.1 L148.3,131.2 L217.8,129.7 L287.3,131.2 L328.0,131.0" class="ln nfshdd"/><circle cx="78.8" cy="133.1" r="4.5" class="pt nfshdd"/><circle cx="148.3" cy="131.2" r="4.5" class="pt nfshdd"/><circle cx="217.8" cy="129.7" r="4.5" class="pt nfshdd"/><circle cx="287.3" cy="131.2" r="4.5" class="pt nfshdd"/><circle cx="328.0" cy="131.0" r="4.5" class="pt nfshdd"/></svg></figure><figure class="sm-fig"><figcaption>Directory creation</figcaption><svg viewBox="0 0 340 205" class="chart sm" role="img" aria-label="Directory creation: operations per second versus MPI ranks, log scale"><line x1="50" y1="171.0" x2="328" y2="171.0" class="grid"/><text x="44" y="174.5" class="tick end">10</text><line x1="50" y1="119.3" x2="328" y2="119.3" class="grid"/><text x="44" y="122.8" class="tick end">100</text><line x1="50" y1="67.7" x2="328" y2="67.7" class="grid"/><text x="44" y="71.2" class="tick end">1k</text><line x1="50" y1="16.0" x2="328" y2="16.0" class="grid"/><text x="44" y="19.5" class="tick end">10k</text><text x="50.0" y="191" class="tick mid">3</text><text x="78.8" y="191" class="tick mid">4</text><text x="119.5" y="191" class="tick mid">6</text><text x="148.3" y="191" class="tick mid">8</text><text x="217.8" y="191" class="tick mid">16</text><text x="287.3" y="191" class="tick mid">32</text><text x="328.0" y="191" class="tick mid">48</text><text x="189" y="203" class="axtitle mid">MPI ranks</text><path d="M148.3,29.0 L217.8,28.5 L287.3,29.9 L328.0,32.2" class="ln beegfs"/><circle cx="148.3" cy="29.0" r="4.5" class="pt beegfs"/><circle cx="217.8" cy="28.5" r="4.5" class="pt beegfs"/><circle cx="287.3" cy="29.9" r="4.5" class="pt beegfs"/><circle cx="328.0" cy="32.2" r="4.5" class="pt beegfs"/><path d="M50.0,46.0 L119.5,42.7" class="ln nfsssd"/><circle cx="50.0" cy="46.0" r="4.5" class="pt nfsssd"/><circle cx="119.5" cy="42.7" r="4.5" class="pt nfsssd"/><path d="M78.8,131.7 L148.3,133.9 L217.8,132.8 L287.3,132.7 L328.0,133.0" class="ln nfshdd"/><circle cx="78.8" cy="131.7" r="4.5" class="pt nfshdd"/><circle cx="148.3" cy="133.9" r="4.5" class="pt nfshdd"/><circle cx="217.8" cy="132.8" r="4.5" class="pt nfshdd"/><circle cx="287.3" cy="132.7" r="4.5" class="pt nfshdd"/><circle cx="328.0" cy="133.0" r="4.5" class="pt nfshdd"/></svg></figure><figure class="sm-fig"><figcaption>Directory stat</figcaption><svg viewBox="0 0 340 205" class="chart sm" role="img" aria-label="Directory stat: operations per second versus MPI ranks, log scale"><line x1="50" y1="171.0" x2="328" y2="171.0" class="grid"/><text x="44" y="174.5" class="tick end">10k</text><line x1="50" y1="16.0" x2="328" y2="16.0" class="grid"/><text x="44" y="19.5" class="tick end">100k</text><text x="50.0" y="191" class="tick mid">3</text><text x="78.8" y="191" class="tick mid">4</text><text x="119.5" y="191" class="tick mid">6</text><text x="148.3" y="191" class="tick mid">8</text><text x="189.0" y="191" class="tick mid">12</text><text x="217.8" y="191" class="tick mid">16</text><text x="287.3" y="191" class="tick mid">32</text><text x="328.0" y="191" class="tick mid">48</text><text x="189" y="203" class="axtitle mid">MPI ranks</text><path d="M78.8,145.5 L148.3,71.7" class="ln beegfs"/><circle cx="78.8" cy="145.5" r="4.5" class="pt beegfs"/><circle cx="148.3" cy="71.7" r="4.5" class="pt beegfs"/><path d="M50.0,152.7 L119.5,100.0 L189.0,64.5" class="ln nfsssd"/><circle cx="50.0" cy="152.7" r="4.5" class="pt nfsssd"/><circle cx="119.5" cy="100.0" r="4.5" class="pt nfsssd"/><circle cx="189.0" cy="64.5" r="4.5" class="pt nfsssd"/><path d="M78.8,144.4 L148.3,90.3 L217.8,57.0 L287.3,46.7 L328.0,58.3" class="ln nfshdd"/><circle cx="78.8" cy="144.4" r="4.5" class="pt nfshdd"/><circle cx="148.3" cy="90.3" r="4.5" class="pt nfshdd"/><circle cx="217.8" cy="57.0" r="4.5" class="pt nfshdd"/><circle cx="287.3" cy="46.7" r="4.5" class="pt nfshdd"/><circle cx="328.0" cy="58.3" r="4.5" class="pt nfshdd"/></svg></figure><figure class="sm-fig"><figcaption>Directory removal</figcaption><svg viewBox="0 0 340 205" class="chart sm" role="img" aria-label="Directory removal: operations per second versus MPI ranks, log scale"><line x1="50" y1="171.0" x2="328" y2="171.0" class="grid"/><text x="44" y="174.5" class="tick end">100</text><line x1="50" y1="119.3" x2="328" y2="119.3" class="grid"/><text x="44" y="122.8" class="tick end">1k</text><line x1="50" y1="67.7" x2="328" y2="67.7" class="grid"/><text x="44" y="71.2" class="tick end">10k</text><line x1="50" y1="16.0" x2="328" y2="16.0" class="grid"/><text x="44" y="19.5" class="tick end">100k</text><text x="50.0" y="191" class="tick mid">3</text><text x="78.8" y="191" class="tick mid">4</text><text x="119.5" y="191" class="tick mid">6</text><text x="148.3" y="191" class="tick mid">8</text><text x="189.0" y="191" class="tick mid">12</text><text x="217.8" y="191" class="tick mid">16</text><text x="287.3" y="191" class="tick mid">32</text><text x="328.0" y="191" class="tick mid">48</text><text x="189" y="203" class="axtitle mid">MPI ranks</text><path d="M78.8,76.9 L148.3,70.6 L217.8,66.3 L287.3,70.6" class="ln beegfs"/><circle cx="78.8" cy="76.9" r="4.5" class="pt beegfs"/><circle cx="148.3" cy="70.6" r="4.5" class="pt beegfs"/><circle cx="217.8" cy="66.3" r="4.5" class="pt beegfs"/><circle cx="287.3" cy="70.6" r="4.5" class="pt beegfs"/><path d="M50.0,94.5 L119.5,92.6 L189.0,93.4" class="ln nfsssd"/><circle cx="50.0" cy="94.5" r="4.5" class="pt nfsssd"/><circle cx="119.5" cy="92.6" r="4.5" class="pt nfsssd"/><circle cx="189.0" cy="93.4" r="4.5" class="pt nfsssd"/><path d="M78.8,169.0 L148.3,168.7 L217.8,168.9 L287.3,169.3 L328.0,169.6" class="ln nfshdd"/><circle cx="78.8" cy="169.0" r="4.5" class="pt nfshdd"/><circle cx="148.3" cy="168.7" r="4.5" class="pt nfshdd"/><circle cx="217.8" cy="168.9" r="4.5" class="pt nfshdd"/><circle cx="287.3" cy="169.3" r="4.5" class="pt nfshdd"/><circle cx="328.0" cy="169.6" r="4.5" class="pt nfshdd"/></svg></figure>
+</div>
+
+<h2>What this means</h2>
+<div class="card">
+<ul>
+<li><strong>BeeGFS is genuinely faster, but the SSDs did most of the work.</strong>
+On identical hardware BeeGFS creates files <strong>1.8×</strong> faster and
+removes them ~3× faster. The <strong>156×</strong> gap against
+<code>/home</code> is mostly the disks.</li>
+<li><strong>BeeGFS keeps scaling; NFS plateaus.</strong> NFS-on-SSD file creation
+flattens at ~4,000/sec once the single server saturates. BeeGFS reaches
+~9,028/sec by spreading metadata across two servers and data across four.</li>
+<li><strong>Stat-heavy work is where BeeGFS wins least.</strong> File stat is only
+1.3–1.7× better — reads were never NFS's weak point.</li>
+<li class="warn"><strong><code>/home</code> is now the bottleneck.</strong> Still NFS
+on one 7200rpm HDD at <strong>58 creates/sec</strong>, and completely flat
+from 4 to 48 ranks — adding clients buys nothing. Conda environments, pip installs and
+job scripts all live there. Moving that workload onto BeeGFS is the next real win.</li>
+</ul>
+</div>
+
+<h2>All measurements</h2>
+<p class="note">Mean operations/sec over 2 iterations, 64 files per rank.
+<em>noisy</em> = std dev exceeded half the mean (phase too fast to time reliably).
+<em>cached</em> = exceeded node-local ext4 speed, so the client answered from its own
+cache rather than the servers. Both are excluded from the charts above rather than
+reported as results.</p>
+<div class="tablewrap"><table><thead><tr><th>Filesystem</th><th class="n">Clients</th><th class="n">Ranks</th><th class="n">File creation</th><th class="n">File stat</th><th class="n">File removal</th><th class="n">Directory creation</th><th class="n">Directory stat</th><th class="n">Directory removal</th></tr></thead><tbody><tr><td><span class="dot beegfs"></span>BeeGFS (SSD)</td><td class="n">4</td><td class="n">4</td><td class="n ">6,673</td><td class="n ">34,311</td><td class="n ">11,737</td><td class="n flag">noisy</td><td class="n ">14,614</td><td class="n ">6,615</td></tr><tr><td><span class="dot beegfs"></span>BeeGFS (SSD)</td><td class="n">4</td><td class="n">8</td><td class="n ">9,028</td><td class="n ">64,456</td><td class="n ">11,305</td><td class="n ">5,603</td><td class="n ">43,748</td><td class="n ">8,762</td></tr><tr><td><span class="dot beegfs"></span>BeeGFS (SSD)</td><td class="n">4</td><td class="n">16</td><td class="n ">8,891</td><td class="n ">112,266</td><td class="n ">10,960</td><td class="n ">5,720</td><td class="n flag">cached</td><td class="n ">10,640</td></tr><tr><td><span class="dot beegfs"></span>BeeGFS (SSD)</td><td class="n">4</td><td class="n">32</td><td class="n ">7,645</td><td class="n ">137,983</td><td class="n ">9,661</td><td class="n ">5,378</td><td class="n flag">cached</td><td class="n ">8,757</td></tr><tr><td><span class="dot beegfs"></span>BeeGFS (SSD)</td><td class="n">4</td><td class="n">48</td><td class="n ">7,094</td><td class="n ">102,139</td><td class="n ">8,598</td><td class="n ">4,864</td><td class="n flag">cached</td><td class="n flag">noisy</td></tr><tr><td><span class="dot beegfs"></span>BeeGFS (SSD)</td><td class="n">3</td><td class="n">3</td><td class="n ">4,877</td><td class="n ">23,898</td><td class="n ">9,551</td><td class="n flag">noisy</td><td class="n flag">noisy</td><td class="n ">5,762</td></tr><tr><td><span class="dot beegfs"></span>BeeGFS (SSD)</td><td class="n">3</td><td class="n">6</td><td class="n ">8,176</td><td class="n ">48,919</td><td class="n ">9,892</td><td class="n flag">noisy</td><td class="n ">25,637</td><td class="n ">8,264</td></tr><tr><td><span class="dot beegfs"></span>BeeGFS (SSD)</td><td class="n">3</td><td class="n">12</td><td class="n ">8,248</td><td class="n ">81,345</td><td class="n ">9,837</td><td class="n ">4,010</td><td class="n ">57,225</td><td class="n ">7,979</td></tr><tr><td><span class="dot beegfs"></span>BeeGFS (SSD)</td><td class="n">3</td><td class="n">24</td><td class="n ">6,710</td><td class="n ">127,569</td><td class="n ">8,489</td><td class="n ">2,207</td><td class="n ">48,407</td><td class="n ">3,239</td></tr><tr><td><span class="dot beegfs"></span>BeeGFS (SSD)</td><td class="n">3</td><td class="n">36</td><td class="n ">7,243</td><td class="n flag">noisy</td><td class="n ">8,098</td><td class="n ">3,401</td><td class="n flag">cached</td><td class="n flag">noisy</td></tr><tr><td><span class="dot nfsssd"></span>NFS (SSD)</td><td class="n">3</td><td class="n">3</td><td class="n ">3,516</td><td class="n ">14,364</td><td class="n ">2,048</td><td class="n ">2,627</td><td class="n ">13,115</td><td class="n ">3,024</td></tr><tr><td><span class="dot nfsssd"></span>NFS (SSD)</td><td class="n">3</td><td class="n">6</td><td class="n ">4,014</td><td class="n ">35,508</td><td class="n ">3,023</td><td class="n ">3,046</td><td class="n ">28,698</td><td class="n ">3,288</td></tr><tr><td><span class="dot nfsssd"></span>NFS (SSD)</td><td class="n">3</td><td class="n">12</td><td class="n ">4,027</td><td class="n ">63,140</td><td class="n ">3,904</td><td class="n flag">noisy</td><td class="n ">48,685</td><td class="n ">3,171</td></tr><tr><td><span class="dot nfshdd"></span>NFS (HDD)</td><td class="n">4</td><td class="n">4</td><td class="n ">58</td><td class="n flag">noisy</td><td class="n ">95</td><td class="n ">58</td><td class="n ">14,848</td><td class="n ">109</td></tr><tr><td><span class="dot nfshdd"></span>NFS (HDD)</td><td class="n">4</td><td class="n">8</td><td class="n ">54</td><td class="n flag">noisy</td><td class="n ">106</td><td class="n ">52</td><td class="n ">33,179</td><td class="n ">111</td></tr><tr><td><span class="dot nfshdd"></span>NFS (HDD)</td><td class="n">4</td><td class="n">16</td><td class="n ">54</td><td class="n ">48,710</td><td class="n ">116</td><td class="n ">55</td><td class="n ">54,416</td><td class="n ">110</td></tr><tr><td><span class="dot nfshdd"></span>NFS (HDD)</td><td class="n">4</td><td class="n">32</td><td class="n ">56</td><td class="n ">64,354</td><td class="n ">107</td><td class="n ">55</td><td class="n ">63,409</td><td class="n ">108</td></tr><tr><td><span class="dot nfshdd"></span>NFS (HDD)</td><td class="n">4</td><td class="n">48</td><td class="n ">56</td><td class="n ">55,200</td><td class="n ">108</td><td class="n ">54</td><td class="n ">53,380</td><td class="n ">107</td></tr></tbody></table></div>
+
+<h2>Method</h2>
+<div class="card">
+<ul>
+<li><code>mdtest</code> 4.1.0, 64 files/rank, 2 iterations, stat phase strided by
+ranks-per-node so a rank stats files created on a <em>different</em> node.</li>
+<li>Zero-byte files: this is a pure <strong>metadata</strong> benchmark. It says
+nothing about bandwidth — use <code>ior</code> for that. mdtest's "File read" row is
+excluded entirely, since with no payload it only measures open/close.</li>
+<li>One job at a time (<code>--exclusive</code> + Slurm singleton dependency);
+concurrent jobs would contend for the same servers.</li>
+<li>Idle verified before and after: no other users' jobs, no interactive users, server
+disks at ~0% utilisation. An <em>earlier</em> attempt was discarded because the login
+node had ten active users with its disk 92–98% busy.</li>
+<li>NFS-on-SSD figures come from <code>/haydean</code> shortly before the BeeGFS
+cutover — same path, same parameters, same client set, so they compare directly.</li>
+<li>Reproduce with <code>./submit_compare.sh &amp;&amp; python3 compare_results.py</code>
+in <code>~/storagebenchmarks</code>.</li>
+</ul>
+</div>
+</div>
