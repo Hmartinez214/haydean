@@ -110,6 +110,28 @@ anything under roughly 1TiB as low on space, so 112G targets sit in the "Low"
 pool permanently and target selection is skewed. Tune `space-low` and
 `space-emergency` in `beegfs-mgmtd.toml`.
 
+**The old NFS fstab entry will hijack the new mount point.** Nodes that
+mounted the retired export still have a line claiming that directory. If it is
+left enabled, `mount <dir>` matches the NFS line rather than the BeeGFS one:
+
+```
+mount.nfs: access denied by server while mounting node1.local:/shared
+```
+
+Comment out the stale entry before repointing the BeeGFS line. `07-cutover.sh`
+now does both, in that order.
+
+**Never build /etc/fstab with a shell redirect.** If the generating command
+fails, the redirect has already truncated the file, and the node is left with
+an empty fstab that will not boot. Edit in place with `sed -i` after taking a
+backup, and verify the root entry still exists before moving on. If an fstab
+is lost, `99-rebuild-fstab.sh` reconstructs one from the node's own `blkid`
+output; it validates the candidate and refuses to install anything missing a
+root or EFI entry. Check the result with `findmnt --verify`, which should
+report `0 parse errors, 0 errors`. Three warnings are normal: the swapfile is
+a regular file, and `beegfs_nodev` is a pseudo-device with no detectable
+on-disk filesystem type.
+
 **The CLI needs to be told TLS is off.** If the management service runs with
 `tls-disable`, every `beegfs` command needs `--tls-disable` too, otherwise:
 
